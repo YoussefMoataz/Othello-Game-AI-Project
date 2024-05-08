@@ -1,3 +1,4 @@
-EMPTY = "-"
-WHITE = "0"
-BLACK = "1"
+EMPTY = -1
+AVAILABLE = 0
+WHITE = 1
+BLACK = 2

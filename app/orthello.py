@@ -7,8 +7,18 @@ class Orthello:
     def print_board(self):
         for i in range(8):
             for j in range(8):
-                print(self.board[i][j], end="")
+                print(self.board[i][j], end=" ")
             print()
+
+    def set_available(self, i, j):
+        self.board[i][j] = AVAILABLE
+
+    def get_board_1d(self):
+        board_1d = []
+        for i in range(8):
+            for j in range(8):
+                board_1d.append(self.board[i][j])
+        return board_1d
 
 if __name__ == "__main__":
     orthello = Orthello()

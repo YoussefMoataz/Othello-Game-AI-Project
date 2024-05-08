@@ -1,5 +1,5 @@
 import flet as ft
-from utils import *
+from ui_utils import *
 
 GREEN = "green"
 WHITE = "white"

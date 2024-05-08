@@ -7,7 +7,7 @@ GREEN = "green"
 WHITE = "white"
 BLACK = "black"
 
-board = ft.GridView(width=500, runs_count=8,  expand=1)
+board = ft.GridView(width=500, runs_count=8, expand=1)
 page = None
 orthello = None
 

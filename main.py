@@ -7,6 +7,7 @@ def main(page: ft.Page):
     page.window_height = 530
     page.window_center()
 
-    create_board(page)
+    set_page(page)
+    create_board()
 
 ft.app(main)

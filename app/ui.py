@@ -15,6 +15,10 @@ othello = None
 def set_page(p):
     global page
     page = p
+    
+def set_othello(o):
+    global othello
+    othello = o
 
 def create_white_disk():
     return ft.Container(border_radius=100, border=ft.Border(ft.BorderSide(BORDER_WIDTH), ft.BorderSide(BORDER_WIDTH), ft.BorderSide(BORDER_WIDTH), ft.BorderSide(BORDER_WIDTH)), bgcolor=WHITE, margin=5)
@@ -45,14 +49,12 @@ def set_available(index):
     othello.set_available(i, j)
 
 def create_board():
-    global othello
-    othello = Othello()
 
     for i in range(0, 64):
         click_handler = create_square_click_handler(i)
         board.controls.append(ft.Container(bgcolor=GREEN, on_click=click_handler))
     
-    page.add(board)
+    # page.add(board)
     refresh_board()
 
 def refresh_board():

@@ -1,5 +1,8 @@
 from ui import *
 import flet as ft
+from views.home import Home
+from views.game import Game
+from flet_route import Routing, path
 
 def main(page: ft.Page):
     page.title = "Orthello Game"
@@ -7,7 +10,12 @@ def main(page: ft.Page):
     page.window_height = 530
     page.window_center()
 
-    set_page(page)
-    create_board()
+    app_routes = [
+        path("/", clear=True, view=Home),
+        path("/game", clear=True, view=Game),
+    ]
+
+    Routing(page=page, app_routes=app_routes)
+    page.go(page.route)
 
 ft.app(main)

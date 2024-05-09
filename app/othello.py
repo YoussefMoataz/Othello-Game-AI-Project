@@ -2,7 +2,7 @@ from utils import *
 import time
 
 class Othello:
-    def __init__(self, difficulty = HARD_DIFF):
+    def __init__(self, difficulty = MEDIUM_DIFF):
         self.di = [0, 1, 0, -1]
         self.dj = [1, 0, -1, 0]
 
@@ -23,6 +23,8 @@ class Othello:
         self.last_played = -1
 
         self.calculate_available_for(BLACK_DISK)
+
+        print(difficulty)
 
     def print_board(self):
         for i in range(8):

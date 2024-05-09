@@ -2,7 +2,7 @@ from utils import *
 import time
 
 class Othello:
-    def __init__(self, difficulty = MEDIUM_DIFF):
+    def __init__(self, difficulty = HARD_DIFF):
         self.di = [0, 1, 0, -1]
         self.dj = [1, 0, -1, 0]
 
@@ -199,7 +199,7 @@ class Othello:
         if avail == []:
             return x, y
         
-        print(avail)
+        # print(avail)
 
         state = [[EMPTY for _ in range(8)] for _ in range(8)]
 
@@ -213,8 +213,10 @@ class Othello:
             res = self.minimax(state, 0, 0, 0, WHITE_DISK)
 
             if res > score:
-                res = score
+                score = res
                 x, y = i, j
+
+        # print(score, x, y)
 
         return x, y
     
@@ -224,7 +226,7 @@ class Othello:
             self.board[x][y] = WHITE_DISK
             self.outflank(x, y, WHITE_DISK)
             self.last_played = x * 8 + y
-            print(x, y)
+            # print(x, y)
         self.clear_available()
         self.calculate_available_for(BLACK_DISK)
             

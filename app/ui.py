@@ -6,6 +6,7 @@ from othello import Othello
 GREEN = "green"
 WHITE = "white"
 BLACK = "black"
+BORDER_WIDTH = 1
 
 board = ft.GridView(width=500, runs_count=8, expand=1)
 page = None
@@ -16,10 +17,10 @@ def set_page(p):
     page = p
 
 def create_white_disk():
-    return ft.Container(border_radius=100, border=ft.Border(ft.BorderSide(2), ft.BorderSide(2), ft.BorderSide(2), ft.BorderSide(2)), bgcolor=WHITE, margin=5)
+    return ft.Container(border_radius=100, border=ft.Border(ft.BorderSide(BORDER_WIDTH), ft.BorderSide(BORDER_WIDTH), ft.BorderSide(BORDER_WIDTH), ft.BorderSide(BORDER_WIDTH)), bgcolor=WHITE, margin=5)
 
 def create_black_disk():
-    return ft.Container(border_radius=100, border=ft.Border(ft.BorderSide(2, WHITE), ft.BorderSide(2, WHITE), ft.BorderSide(2, WHITE), ft.BorderSide(2, WHITE)), bgcolor=BLACK, margin=5)
+    return ft.Container(border_radius=100, border=ft.Border(ft.BorderSide(BORDER_WIDTH, WHITE), ft.BorderSide(BORDER_WIDTH, WHITE), ft.BorderSide(BORDER_WIDTH, WHITE), ft.BorderSide(BORDER_WIDTH, WHITE)), bgcolor=BLACK, margin=5)
 
 def create_available_square():
     return ft.Container(border=ft.Border(ft.BorderSide(2, WHITE), ft.BorderSide(2, WHITE), ft.BorderSide(2, WHITE), ft.BorderSide(2, WHITE)))

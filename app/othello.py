@@ -22,7 +22,7 @@ class Othello:
 
         self.calculate_available_for(BLACK_DISK)
 
-        self.state = STATE_NORMAL
+        self.state = STATE_PLAYER_TURN
 
     def print_board(self):
         for i in range(8):
@@ -143,6 +143,16 @@ class Othello:
                 if (self.board[i][j] == EMPTY) : 
                     return True 
         return False
+    
+    def evaluate_both(self):
+        player, computer = 0, 0
+        for i in range(8):
+            for j in range(8):
+                if self.board[i][j] == BLACK_DISK:
+                    player += 1
+                elif self.board[i][j] == WHITE_DISK:
+                    computer += 1
+        return player, computer
 
     def evaluate(self, board, player):
         opponent = self.get_opponent(player)
@@ -232,12 +242,15 @@ class Othello:
         avail = self.get_available_moves()
         if avail == []:
             self.apply_best_move()
+
+        self.state = STATE_PLAYER_TURN
             
     def player_clicked(self, i, j):
         if self.board[i][j] == AVAILABLE:
             self.board[i][j] = BLACK_DISK
             self.outflank(i, j, BLACK_DISK)
             self.last_played = i * 8 + j
+            self.state = STATE_AI_TURN
 
 if __name__ == "__main__":
     othello = Othello()

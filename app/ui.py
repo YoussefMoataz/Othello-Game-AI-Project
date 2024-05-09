@@ -10,6 +10,8 @@ BLACK = "black"
 BORDER_WIDTH = 1
 
 board = ft.GridView(width=500, runs_count=8, expand=1)
+game_state = ft.Text(size=18)
+game_score = ft.Text(size=25)
 page = None
 othello = None
 
@@ -36,9 +38,13 @@ def create_square_click_handler(index):
         # print("clicked index:", i, j)
         othello.player_clicked(i, j)
         refresh_board()
+        refresh_state()
+        refresh_score()
         time.sleep(1)
         othello.apply_best_move()
         refresh_board()
+        refresh_state()
+        refresh_score()
     return click
 
 def create_board():
@@ -47,8 +53,9 @@ def create_board():
         click_handler = create_square_click_handler(i)
         board.controls.append(ft.Container(bgcolor=GREEN, on_click=click_handler))
     
-    # page.add(board)
     refresh_board()
+    refresh_state()
+    refresh_score()
 
 def refresh_board():
     board_orthello = othello.get_board_1d()
@@ -67,4 +74,17 @@ def refresh_board():
     if not othello.last_played == -1:
         board.controls[othello.last_played].border = ft.Border(ft.BorderSide(2, "red"), ft.BorderSide(2, "red"), ft.BorderSide(2, "red"), ft.BorderSide(2, "red"))
 
+    page.update()
+
+def refresh_state():
+    if othello.state == STATE_PLAYER_TURN:
+        game_state.value = "Player's turn"
+    elif othello.state == STATE_AI_TURN:
+        game_state.value = "AI making move ..."
+
+    page.update()
+
+def refresh_score():
+    player, computer = othello.evaluate_both()
+    game_score.value = "(You) " + str(player) + " - " + str(computer) + " (AI)"
     page.update()

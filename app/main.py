@@ -7,7 +7,7 @@ from flet_route import Routing, path
 def main(page: ft.Page):
     page.title = "Orthello Game"
     page.window_width = 500
-    page.window_height = 530
+    page.window_height = 620
     page.window_center()
 
     app_routes = [

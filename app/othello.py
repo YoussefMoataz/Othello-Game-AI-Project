@@ -2,29 +2,28 @@ from utils import *
 import time
 
 class Othello:
-    def __init__(self, difficulty = MEDIUM_DIFF):
+    def __init__(self, difficulty = DIFF_MEDIUM):
         self.di = [0, 1, 0, -1]
         self.dj = [1, 0, -1, 0]
 
         self.depth = 0
 
-        if difficulty == EASY_DIFF:
-            self.depth = EASY
-        elif difficulty == MEDIUM_DIFF:
-            self.depth = MEDIUM
-        elif difficulty == HARD_DIFF:
-            self.depth = HARD
+        if difficulty == DIFF_EASY:
+            self.depth = DEPTH_EASY
+        elif difficulty == DIFF_MEDIUM:
+            self.depth = DEPTH_MEDIUM
+        elif difficulty == DIFF_HARD:
+            self.depth = DEPTH_HARD
 
         self.board = [[EMPTY for _ in range(8)] for _ in range(8)]
         self.board[3][3] = self.board[4][4] = WHITE_DISK
         self.board[3][4] = self.board[4][3] = BLACK_DISK
-        # self.board[3][2] = WHITE_DISK
 
         self.last_played = -1
 
         self.calculate_available_for(BLACK_DISK)
 
-        print(difficulty)
+        self.state = STATE_NORMAL
 
     def print_board(self):
         for i in range(8):

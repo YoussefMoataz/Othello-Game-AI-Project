@@ -6,15 +6,15 @@ from utils import *
 def Home(page: ft.Page, params, basket):
 
     def easy_clicked(e):
-        set_othello(Othello(EASY_DIFF))
+        set_othello(Othello(DIFF_EASY))
         page.go("/game")
 
     def medium_clicked(e):
-        set_othello(Othello(MEDIUM_DIFF))
+        set_othello(Othello(DIFF_MEDIUM))
         page.go("/game")
 
     def hard_clicked(e):
-        set_othello(Othello(HARD_DIFF))
+        set_othello(Othello(DIFF_HARD))
         page.go("/game")
 
     return ft.View("/", 

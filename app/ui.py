@@ -32,7 +32,7 @@ def create_available_square():
 def create_square_click_handler(index):
     def click(e):
         i, j = get_index_2d(index)
-        print("clicked index:", i, j)
+        # print("clicked index:", i, j)
         othello.player_clicked(i, j)
         refresh_board()
     return click

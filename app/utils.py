@@ -3,10 +3,15 @@ AVAILABLE = 0
 WHITE_DISK = 1
 BLACK_DISK = 2
 
-EASY = 1
-MEDIUM = 3
-HARD = 5
+DEPTH_EASY = 1
+DEPTH_MEDIUM = 3
+DEPTH_HARD = 5
 
-EASY_DIFF = "easy"
-MEDIUM_DIFF = "medium"
-HARD_DIFF = "hard"
+DIFF_EASY = "easy"
+DIFF_MEDIUM = "medium"
+DIFF_HARD = "hard"
+
+STATE_NORMAL = "normal"
+STATE_WHITE_WON = "white"
+STATE_BLACK_WON = "black"
+STATE_DRAW = "draw"

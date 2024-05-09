@@ -37,17 +37,6 @@ def create_square_click_handler(index):
         refresh_board()
     return click
 
-def update_board(index, color):
-    if color == BLACK:
-        board.controls[index].content = create_black_disk()
-    else:
-        board.controls[index].content = create_white_disk()
-    page.update()
-
-def set_available(index):
-    i, j = get_index_2d(index)
-    othello.set_available(i, j)
-
 def create_board():
 
     for i in range(0, 64):

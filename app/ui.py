@@ -40,7 +40,7 @@ def create_square_click_handler(index):
         refresh_board()
         refresh_state()
         refresh_score()
-        time.sleep(1)
+        # time.sleep(1)
         othello.apply_best_move()
         refresh_board()
         refresh_state()

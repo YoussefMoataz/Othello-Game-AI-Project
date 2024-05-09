@@ -181,8 +181,12 @@ class Othello:
                 self.calculate_available_for(WHITE_DISK)
 
                 best = max(best, self.minimax(board, depth+1, alpha, beta, WHITE_DISK))
+                alpha = max(alpha, best)
 
                 board[i][j] = AVAILABLE
+
+                if beta <= alpha:
+                    break
 
         else:
             best = float("inf")
@@ -194,8 +198,12 @@ class Othello:
                 self.calculate_available_for(BLACK_DISK)
 
                 best = min(best, self.minimax(board, depth+1, alpha, beta, BLACK_DISK))
+                beta = min(beta, best)
 
                 board[i][j] = AVAILABLE
+
+                if beta <= alpha:
+                    break
 
         return best
     

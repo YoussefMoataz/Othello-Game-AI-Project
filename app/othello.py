@@ -1,5 +1,4 @@
 from utils import *
-import time
 
 class Othello:
     def __init__(self, difficulty = DIFF_MEDIUM):
@@ -230,16 +229,15 @@ class Othello:
             # print(x, y)
         self.clear_available()
         self.calculate_available_for(BLACK_DISK)
+        avail = self.get_available_moves()
+        if avail == []:
+            self.apply_best_move()
             
     def player_clicked(self, i, j):
         if self.board[i][j] == AVAILABLE:
             self.board[i][j] = BLACK_DISK
             self.outflank(i, j, BLACK_DISK)
-            self.apply_best_move()
-            avail = self.get_available_moves()
-            if avail == []:
-                self.apply_best_move()
-
+            self.last_played = i * 8 + j
 
 if __name__ == "__main__":
     othello = Othello()

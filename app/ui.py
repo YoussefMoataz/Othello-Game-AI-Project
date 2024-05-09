@@ -1,7 +1,8 @@
 import flet as ft
 from ui_utils import *
 from utils import *
-from othello import Othello
+from othello import *
+import time
 
 GREEN = "green"
 WHITE = "white"
@@ -34,6 +35,9 @@ def create_square_click_handler(index):
         i, j = get_index_2d(index)
         # print("clicked index:", i, j)
         othello.player_clicked(i, j)
+        refresh_board()
+        time.sleep(1)
+        othello.apply_best_move()
         refresh_board()
     return click
 

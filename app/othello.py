@@ -1,8 +1,10 @@
 from utils import *
 
-class Orthello:
+class Othello:
     def __init__(self):
         self.board = [[EMPTY for _ in range(8)] for _ in range(8)]
+        self.board[3][3] = self.board[4][4] = WHITE_DISK
+        self.board[3][4] = self.board[4][3] = BLACK_DISK
 
     def print_board(self):
         for i in range(8):
@@ -19,7 +21,14 @@ class Orthello:
             for j in range(8):
                 board_1d.append(self.board[i][j])
         return board_1d
+    
+    # def calculate_available(self):
+        
+    
+    def player_clicked(self, i, j):
+        if self.board[i][j] == AVAILABLE:
+            self.board[i][j] = BLACK_DISK
 
 if __name__ == "__main__":
-    orthello = Orthello()
-    orthello.print_board()
+    othello = Othello()
+    othello.print_board()

@@ -1,7 +1,7 @@
 import flet as ft
 from ui_utils import *
 from utils import *
-from orthello import Orthello
+from othello import Othello
 
 GREEN = "green"
 WHITE = "white"
@@ -9,7 +9,7 @@ BLACK = "black"
 
 board = ft.GridView(width=500, runs_count=8, expand=1)
 page = None
-orthello = None
+othello = None
 
 def set_page(p):
     global page
@@ -26,8 +26,9 @@ def create_available_square():
 
 def create_square_click_handler(index):
     def click(e):
-        print("clicked index:", get_index_2d(index))
-        set_available(index) # todo: add player movement to orthello and let it calculate the move
+        i, j = get_index_2d(index)
+        print("clicked index:", i, j)
+        othello.player_clicked(i, j)
         refresh_board()
     return click
 
@@ -40,24 +41,28 @@ def update_board(index, color):
 
 def set_available(index):
     i, j = get_index_2d(index)
-    orthello.set_available(i, j)
+    othello.set_available(i, j)
 
 def create_board():
-    global orthello
-    orthello = Orthello()
+    global othello
+    othello = Othello()
 
     for i in range(0, 64):
         click_handler = create_square_click_handler(i)
         board.controls.append(ft.Container(bgcolor=GREEN, on_click=click_handler))
     
     page.add(board)
-    page.update()
+    refresh_board()
 
 def refresh_board():
-    board_orthello = orthello.get_board_1d()
+    board_orthello = othello.get_board_1d()
 
     for i in range(0, 64):
         if board_orthello[i] == AVAILABLE:
             board.controls[i].content = create_available_square()
+        elif board_orthello[i] == WHITE_DISK:
+            board.controls[i].content = create_white_disk()
+        elif board_orthello[i] == BLACK_DISK:
+            board.controls[i].content = create_black_disk()
 
     page.update()

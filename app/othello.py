@@ -1,15 +1,27 @@
 from utils import *
+import time
 
 class Othello:
-    def __init__(self):
+    def __init__(self, difficulty = MEDIUM_DIFF):
         self.di = [0, 1, 0, -1]
         self.dj = [1, 0, -1, 0]
+
+        self.depth = 0
+
+        if difficulty == EASY_DIFF:
+            self.depth = EASY
+        elif difficulty == MEDIUM_DIFF:
+            self.depth = MEDIUM
+        elif difficulty == HARD_DIFF:
+            self.depth = HARD
 
         self.board = [[EMPTY for _ in range(8)] for _ in range(8)]
         self.board[3][3] = self.board[4][4] = WHITE_DISK
         self.board[3][4] = self.board[4][3] = BLACK_DISK
+        # self.board[3][2] = WHITE_DISK
 
-        self.current_player = BLACK_DISK
+        self.last_played = -1
+
         self.calculate_available_for(BLACK_DISK)
 
     def print_board(self):
@@ -21,14 +33,14 @@ class Othello:
     def is_in_board(self, i, j):
         return 0 <= i < 8 and 0 <= j < 8
 
-    def set_available_around(self, i, j):
+    def set_available_around(self, i, j, player):
         for c in range(4):
             currenti = i + self.di[c]
             currentj = j + self.dj[c]
             if not self.is_in_board(currenti, currentj):
                 continue
             if self.board[currenti][currentj] == EMPTY:
-                if(self.can_outflank(currenti, currentj, -self.di[c], -self.dj[c], self.current_player)):
+                if(self.can_outflank(currenti, currentj, -self.di[c], -self.dj[c], player)):
                     self.board[currenti][currentj] = AVAILABLE
 
     def get_board_1d(self):
@@ -52,8 +64,16 @@ class Othello:
         for i in range(8):
             for j in range(8):
                 if self.board[i][j] == opponent:
-                    self.set_available_around(i, j)
-    
+                    self.set_available_around(i, j, player)
+
+    def get_available_moves(self):
+        avail = []
+        for i in range(8):
+            for j in range(8):
+                if self.board[i][j] == AVAILABLE:
+                    avail.append((i, j))
+        return avail
+                    
     def clear_available(self):
         for i in range(8):
             for j in range(8):
@@ -70,11 +90,14 @@ class Othello:
         opponent = self.get_opponent(player)
         flag = False
         
-        for _ in range(1, 8):
+        for _ in range(8):
             last_i += di
             last_j += dj
             
             if not self.is_in_board(last_i, last_j):
+                break
+
+            if self.board[last_i][last_j] == EMPTY:
                 break
             
             if self.board[last_i][last_j] == opponent:
@@ -95,11 +118,14 @@ class Othello:
         opponent = self.get_opponent(player)
         flag = False
         
-        for _ in range(1, 8):
+        for _ in range(8):
             last_i += di
             last_j += dj
             
             if not self.is_in_board(last_i, last_j):
+                break
+
+            if self.board[last_i][last_j] == EMPTY:
                 break
             
             if self.board[last_i][last_j] == opponent:
@@ -110,13 +136,107 @@ class Othello:
                 break
 
         return flag
+    
+    def is_moves_left(self):
+        for i in range(8) : 
+            for j in range(8) : 
+                if (self.board[i][j] == EMPTY) : 
+                    return True 
+        return False
 
+    def evaluate(self, board, player):
+        opponent = self.get_opponent(player)
+        score = 0
+        for i in range(8):
+            for j in range(8):
+                if board[i][j] == player:
+                    score += 1
+                elif board[i][j] == opponent:
+                    score -= 1
+        return score
+    
+    def minimax(self, board, depth, alpha, beta, player):
+
+        if depth == self.depth or self.get_available_moves() == []:
+            return self.evaluate(board, player)
+        
+        best = 0
+        if player == BLACK_DISK:
+            best = float("-inf")
+
+            avail = self.get_available_moves()
+
+            for (i, j) in avail:
+                board[i][j] = BLACK_DISK
+                self.calculate_available_for(WHITE_DISK)
+
+                best = max(best, self.minimax(board, depth+1, alpha, beta, WHITE_DISK))
+
+                board[i][j] = AVAILABLE
+
+        else:
+            best = float("inf")
+
+            avail = self.get_available_moves()
+
+            for (i, j) in avail:
+                board[i][j] = WHITE_DISK
+                self.calculate_available_for(BLACK_DISK)
+
+                best = min(best, self.minimax(board, depth+1, alpha, beta, BLACK_DISK))
+
+                board[i][j] = AVAILABLE
+
+        return best
+    
+    def get_best_move(self):
+
+        self.calculate_available_for(WHITE_DISK)
+
+        x, y = -1, -1
+
+        avail = self.get_available_moves()
+        if avail == []:
+            return x, y
+        
+        print(avail)
+
+        state = [[EMPTY for _ in range(8)] for _ in range(8)]
+
+        for i in range(8):
+            for j in range(8):
+                state[i][j] = self.board[i][j]
+
+        score = float("-inf")
+
+        for (i, j) in avail:
+            res = self.minimax(state, 0, 0, 0, WHITE_DISK)
+
+            if res > score:
+                res = score
+                x, y = i, j
+
+        return x, y
+    
+    def apply_best_move(self):
+        x, y = self.get_best_move()
+        if x > -1 and y > -1:
+            self.board[x][y] = WHITE_DISK
+            self.outflank(x, y, WHITE_DISK)
+            self.last_played = x * 8 + y
+            print(x, y)
+        self.clear_available()
+        self.calculate_available_for(BLACK_DISK)
+            
     def player_clicked(self, i, j):
         if self.board[i][j] == AVAILABLE:
             self.board[i][j] = BLACK_DISK
             self.outflank(i, j, BLACK_DISK)
-            # todo: calculate avilable for white, do white move, then calculate avilable for black
-            self.calculate_available_for(BLACK_DISK)
+            self.apply_best_move()
+            avail = self.get_available_moves()
+            if avail == []:
+                self.apply_best_move()
+
 
 if __name__ == "__main__":
     othello = Othello()

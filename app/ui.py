@@ -59,6 +59,7 @@ def refresh_board():
     board_orthello = othello.get_board_1d()
 
     for i in range(0, 64):
+        board.controls[i].border = None
         if board_orthello[i] == AVAILABLE:
             board.controls[i].content = create_available_square()
         elif board_orthello[i] == WHITE_DISK:
@@ -67,5 +68,8 @@ def refresh_board():
             board.controls[i].content = create_black_disk()
         else:
             board.controls[i].content = None
+    
+    if not othello.last_played == -1:
+        board.controls[othello.last_played].border = ft.Border(ft.BorderSide(2, "red"), ft.BorderSide(2, "red"), ft.BorderSide(2, "red"), ft.BorderSide(2, "red"))
 
     page.update()

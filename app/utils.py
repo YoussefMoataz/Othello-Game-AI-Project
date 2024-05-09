@@ -2,3 +2,11 @@ EMPTY = -1
 AVAILABLE = 0
 WHITE_DISK = 1
 BLACK_DISK = 2
+
+EASY = 1
+MEDIUM = 3
+HARD = 5
+
+EASY_DIFF = "easy"
+MEDIUM_DIFF = "medium"
+HARD_DIFF = "hard"

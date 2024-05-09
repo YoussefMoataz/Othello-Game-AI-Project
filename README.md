@@ -1,4 +1,4 @@
-# A orthello-game-ai-project Flet app
+# A othello-game-ai-project Flet app
 
 An example of a minimal Flet app.
 

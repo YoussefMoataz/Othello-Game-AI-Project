@@ -65,5 +65,7 @@ def refresh_board():
             board.controls[i].content = create_white_disk()
         elif board_orthello[i] == BLACK_DISK:
             board.controls[i].content = create_black_disk()
+        else:
+            board.controls[i].content = None
 
     page.update()

@@ -20,7 +20,7 @@ class Othello:
 
         self.last_played = -1
 
-        self.calculate_available_for(BLACK_DISK)
+        self.calculate_available_for(BLACK_DISK, self.board)
 
         self.state = STATE_PLAYER_TURN
 
@@ -33,15 +33,15 @@ class Othello:
     def is_in_board(self, i, j):
         return 0 <= i < 8 and 0 <= j < 8
 
-    def set_available_around(self, i, j, player):
+    def set_available_around(self, i, j, player, board):
         for c in range(4):
             currenti = i + self.di[c]
             currentj = j + self.dj[c]
             if not self.is_in_board(currenti, currentj):
                 continue
-            if self.board[currenti][currentj] == EMPTY:
-                if(self.can_outflank(currenti, currentj, -self.di[c], -self.dj[c], player)):
-                    self.board[currenti][currentj] = AVAILABLE
+            if board[currenti][currentj] == EMPTY:
+                if(self.can_outflank(currenti, currentj, -self.di[c], -self.dj[c], player, board)):
+                    board[currenti][currentj] = AVAILABLE
 
     def get_board_1d(self):
         board_1d = []
@@ -58,34 +58,34 @@ class Othello:
             opponent = BLACK_DISK
         return opponent
     
-    def calculate_available_for(self, player):
+    def calculate_available_for(self, player, board):
         opponent = self.get_opponent(player)
         
         for i in range(8):
             for j in range(8):
-                if self.board[i][j] == opponent:
-                    self.set_available_around(i, j, player)
+                if board[i][j] == opponent:
+                    self.set_available_around(i, j, player, board)
 
-    def get_available_moves(self):
+    def get_available_moves(self, board):
         avail = []
         for i in range(8):
             for j in range(8):
-                if self.board[i][j] == AVAILABLE:
+                if board[i][j] == AVAILABLE:
                     avail.append((i, j))
         return avail
                     
-    def clear_available(self):
+    def clear_available(self, board):
         for i in range(8):
             for j in range(8):
-                if self.board[i][j] == AVAILABLE:
-                    self.board[i][j] = EMPTY
+                if board[i][j] == AVAILABLE:
+                    board[i][j] = EMPTY
         
-    def outflank(self, i, j, player):
+    def outflank(self, i, j, player, board):
         for c in range(4):
-            self.outflank_direction(i, j, self.di[c], self.dj[c], player)
-        self.clear_available()
+            self.outflank_direction(i, j, self.di[c], self.dj[c], player, board)
+        self.clear_available(board)
                 
-    def outflank_direction(self, i, j, di, dj, player):
+    def outflank_direction(self, i, j, di, dj, player, board):
         last_i, last_j = i, j
         opponent = self.get_opponent(player)
         flag = False
@@ -97,23 +97,23 @@ class Othello:
             if not self.is_in_board(last_i, last_j):
                 break
 
-            if self.board[last_i][last_j] == EMPTY or self.board[last_i][last_j] == AVAILABLE:
+            if board[last_i][last_j] == EMPTY or board[last_i][last_j] == AVAILABLE:
                 break
             
-            if self.board[last_i][last_j] == opponent:
+            if board[last_i][last_j] == opponent:
                 continue
             
-            if self.board[last_i][last_j] == player:
+            if board[last_i][last_j] == player:
                 flag = True
                 break
 
         if flag:
             while (i, j) != (last_i, last_j):
-                self.board[i][j] = player
+                board[i][j] = player
                 i += di
                 j += dj
     
-    def can_outflank(self, i, j, di, dj, player):
+    def can_outflank(self, i, j, di, dj, player, board):
         last_i, last_j = i, j
         opponent = self.get_opponent(player)
         flag = False
@@ -125,13 +125,13 @@ class Othello:
             if not self.is_in_board(last_i, last_j):
                 break
 
-            if self.board[last_i][last_j] == EMPTY or self.board[last_i][last_j] == AVAILABLE:
+            if board[last_i][last_j] == EMPTY or board[last_i][last_j] == AVAILABLE:
                 break
             
-            if self.board[last_i][last_j] == opponent:
+            if board[last_i][last_j] == opponent:
                 continue
             
-            if self.board[last_i][last_j] == player:
+            if board[last_i][last_j] == player:
                 flag = True
                 break
 
@@ -167,20 +167,22 @@ class Othello:
     
     def minimax(self, board, depth, alpha, beta, player):
 
-        if depth == self.depth or self.get_available_moves() == []:
+        if depth == self.depth or self.get_available_moves(board) == []:
             return self.evaluate(board, player)
         
         best = 0
         if player == BLACK_DISK:
             best = float("-inf")
 
-            avail = self.get_available_moves()
+            avail = self.get_available_moves(board)
 
             for (i, j) in avail:
                 board[i][j] = BLACK_DISK
-                self.calculate_available_for(WHITE_DISK)
+                state = [row[:] for row in board]
+                self.outflank(i, j, BLACK_DISK, state)
+                self.calculate_available_for(WHITE_DISK, state)
 
-                best = max(best, self.minimax(board, depth+1, alpha, beta, WHITE_DISK))
+                best = max(best, self.minimax(state, depth+1, alpha, beta, WHITE_DISK))
                 alpha = max(alpha, best)
 
                 board[i][j] = AVAILABLE
@@ -191,13 +193,15 @@ class Othello:
         else:
             best = float("inf")
 
-            avail = self.get_available_moves()
+            avail = self.get_available_moves(board)
 
             for (i, j) in avail:
                 board[i][j] = WHITE_DISK
-                self.calculate_available_for(BLACK_DISK)
+                state = [row[:] for row in board]
+                self.outflank(i, j, WHITE_DISK, state)
+                self.calculate_available_for(BLACK_DISK, state)
 
-                best = min(best, self.minimax(board, depth+1, alpha, beta, BLACK_DISK))
+                best = min(best, self.minimax(state, depth+1, alpha, beta, BLACK_DISK))
                 beta = min(beta, best)
 
                 board[i][j] = AVAILABLE
@@ -209,11 +213,11 @@ class Othello:
     
     def get_best_move(self):
 
-        self.calculate_available_for(WHITE_DISK)
+        self.calculate_available_for(WHITE_DISK, self.board)
 
         x, y = -1, -1
 
-        avail = self.get_available_moves()
+        avail = self.get_available_moves(self.board)
         if avail == []:
             return x, y
         
@@ -228,13 +232,13 @@ class Othello:
         score = float("-inf")
 
         for (i, j) in avail:
-            res = self.minimax(state, 0, 0, 0, WHITE_DISK)
+            res = self.minimax(state, 0, MIN, MAX, WHITE_DISK)
 
             if res > score:
                 score = res
                 x, y = i, j
 
-        # print(score, x, y)
+        print(score, x, y)
 
         return x, y
     
@@ -242,12 +246,12 @@ class Othello:
         x, y = self.get_best_move()
         if x > -1 and y > -1:
             self.board[x][y] = WHITE_DISK
-            self.outflank(x, y, WHITE_DISK)
+            self.outflank(x, y, WHITE_DISK, self.board)
             self.last_played = x * 8 + y
             # print(x, y)
-        self.clear_available()
-        self.calculate_available_for(BLACK_DISK)
-        avail = self.get_available_moves()
+        self.clear_available(self.board)
+        self.calculate_available_for(BLACK_DISK, self.board)
+        avail = self.get_available_moves(self.board)
         if avail == []:
             if not done_before:
                 self.apply_best_move(True)
@@ -266,7 +270,7 @@ class Othello:
     def player_clicked(self, i, j):
         if self.board[i][j] == AVAILABLE:
             self.board[i][j] = BLACK_DISK
-            self.outflank(i, j, BLACK_DISK)
+            self.outflank(i, j, BLACK_DISK, self.board)
             self.last_played = i * 8 + j
             self.state = STATE_AI_TURN
 

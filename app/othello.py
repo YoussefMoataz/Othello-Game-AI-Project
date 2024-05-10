@@ -97,7 +97,7 @@ class Othello:
             if not self.is_in_board(last_i, last_j):
                 break
 
-            if self.board[last_i][last_j] == EMPTY:
+            if self.board[last_i][last_j] == EMPTY or self.board[last_i][last_j] == AVAILABLE:
                 break
             
             if self.board[last_i][last_j] == opponent:
@@ -125,7 +125,7 @@ class Othello:
             if not self.is_in_board(last_i, last_j):
                 break
 
-            if self.board[last_i][last_j] == EMPTY:
+            if self.board[last_i][last_j] == EMPTY or self.board[last_i][last_j] == AVAILABLE:
                 break
             
             if self.board[last_i][last_j] == opponent:

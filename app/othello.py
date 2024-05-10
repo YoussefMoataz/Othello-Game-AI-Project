@@ -1,4 +1,4 @@
-from utils import *
+from app.utils import *
 
 class Othello:
     def __init__(self, difficulty = DIFF_MEDIUM):
@@ -273,7 +273,3 @@ class Othello:
             self.outflank(i, j, BLACK_DISK, self.board)
             self.last_played = i * 8 + j
             self.state = STATE_AI_TURN
-
-if __name__ == "__main__":
-    othello = Othello()
-    othello.print_board()

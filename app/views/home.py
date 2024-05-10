@@ -1,7 +1,7 @@
 import flet as ft
-from ui import set_othello
-from othello import Othello
-from utils import *
+from app.ui import set_othello
+from app.othello import Othello
+from app.utils import *
 
 def Home(page: ft.Page, params, basket):
 

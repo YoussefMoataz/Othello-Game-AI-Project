@@ -1,5 +1,5 @@
 import flet as ft
-from ui import *
+from app.ui import *
 
 def Game(page: ft.Page, params, basket):
 

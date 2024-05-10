@@ -1,7 +1,7 @@
-from ui import *
+from app.ui import *
 import flet as ft
-from views.home import Home
-from views.game import Game
+from app.views.home import Home
+from app.views.game import Game
 from flet_route import Routing, path
 
 def main(page: ft.Page):

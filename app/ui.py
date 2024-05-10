@@ -1,7 +1,7 @@
 import flet as ft
-from ui_utils import *
-from utils import *
-from othello import *
+from app.ui_utils import *
+from app.utils import *
+from app.othello import *
 import time
 
 GREEN = "green"

@@ -242,20 +242,36 @@ class Othello:
 
         return x, y
     
-    def apply_best_move(self, done_before=False):
-        x, y = self.get_best_move()
-        if x > -1 and y > -1:
-            self.board[x][y] = WHITE_DISK
-            self.outflank(x, y, WHITE_DISK, self.board)
-            self.last_played = x * 8 + y
-            # print(x, y)
-        self.clear_available(self.board)
+    def is_terminal_state(self):
+
         self.calculate_available_for(BLACK_DISK, self.board)
-        avail = self.get_available_moves(self.board)
-        if avail == []:
-            if not done_before:
-                self.apply_best_move(True)
-            else:
+        avail_black = self.get_available_moves(self.board)
+        self.clear_available(self.board)
+
+        self.calculate_available_for(WHITE_DISK, self.board)
+        avail_white = self.get_available_moves(self.board)
+        self.clear_available(self.board)
+
+        return avail_black == avail_white == []
+
+
+    def apply_best_move(self):
+        avail = []
+        while avail == []:
+            x, y = self.get_best_move()
+            if x > -1 and y > -1:
+                self.board[x][y] = WHITE_DISK
+                self.outflank(x, y, WHITE_DISK, self.board)
+                self.last_played = x * 8 + y
+                # print(x, y)
+            self.clear_available(self.board)
+            self.calculate_available_for(BLACK_DISK, self.board)
+            avail = self.get_available_moves(self.board)
+            if not avail == []:
+                self.state = STATE_PLAYER_TURN
+                return
+            
+            if self.is_terminal_state():
                 p, c = self.evaluate_both()
                 if p > c:
                     self.state = STATE_BLACK_WON
@@ -263,9 +279,7 @@ class Othello:
                     self.state = STATE_WHITE_WON
                 else:
                     self.state = STATE_DRAW
-                return
-        else:
-            self.state = STATE_PLAYER_TURN
+                break
             
     def player_clicked(self, i, j):
         if self.board[i][j] == AVAILABLE:

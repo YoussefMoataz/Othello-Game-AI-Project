@@ -168,7 +168,7 @@ class Othello:
     def minimax(self, board, depth, alpha, beta, player):
 
         if depth == self.depth or self.get_available_moves(board) == []:
-            return self.evaluate(board, player)
+            return self.evaluate(board, self.get_opponent(player))
         
         best = 0
         if player == BLACK_DISK:

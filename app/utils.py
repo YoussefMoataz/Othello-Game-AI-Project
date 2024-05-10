@@ -17,6 +17,7 @@ STATE_BLACK_WON = "black"
 STATE_DRAW = "draw"
 STATE_PLAYER_TURN = "player"
 STATE_AI_TURN = "computer"
+STATE_NO_MORE_MOVES = "nomoremoves"
 
 MAX = 1000
 MIN = -1000

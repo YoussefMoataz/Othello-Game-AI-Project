@@ -238,7 +238,7 @@ class Othello:
 
         return x, y
     
-    def apply_best_move(self):
+    def apply_best_move(self, done_before=False):
         x, y = self.get_best_move()
         if x > -1 and y > -1:
             self.board[x][y] = WHITE_DISK
@@ -249,9 +249,19 @@ class Othello:
         self.calculate_available_for(BLACK_DISK)
         avail = self.get_available_moves()
         if avail == []:
-            self.apply_best_move()
-
-        self.state = STATE_PLAYER_TURN
+            if not done_before:
+                self.apply_best_move(True)
+            else:
+                p, c = self.evaluate_both()
+                if p > c:
+                    self.state = STATE_BLACK_WON
+                elif p < c:
+                    self.state = STATE_WHITE_WON
+                else:
+                    self.state = STATE_DRAW
+                return
+        else:
+            self.state = STATE_PLAYER_TURN
             
     def player_clicked(self, i, j):
         if self.board[i][j] == AVAILABLE:

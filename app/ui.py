@@ -40,7 +40,7 @@ def create_square_click_handler(index):
         refresh_board()
         refresh_state()
         refresh_score()
-        # time.sleep(1)
+        time.sleep(1)
         othello.apply_best_move()
         refresh_board()
         refresh_state()
@@ -81,6 +81,14 @@ def refresh_state():
         game_state.value = "Player's turn"
     elif othello.state == STATE_AI_TURN:
         game_state.value = "AI making move ..."
+    elif othello.state == STATE_NO_MORE_MOVES:
+        game_state.value = "No more moves."
+    elif othello.state == STATE_BLACK_WON:
+        game_state.value = "You won!"
+    elif othello.state == STATE_WHITE_WON:
+        game_state.value = "AI won!"
+    elif othello.state == STATE_DRAW:
+        game_state.value = "Draw!"
 
     page.update()
 

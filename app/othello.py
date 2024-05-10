@@ -238,7 +238,7 @@ class Othello:
                 score = res
                 x, y = i, j
 
-        print(score, x, y)
+        # print(score, x, y)
 
         return x, y
     

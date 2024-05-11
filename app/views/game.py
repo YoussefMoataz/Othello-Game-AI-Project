@@ -1,10 +1,10 @@
 import flet as ft
-from app.ui import *
+from app.controller import *
 
 def Game(page: ft.Page, params, basket):
 
-    set_page(page)
-    create_board()
+    diff = params.get("diff")
+    controller = Controller(diff, page)
 
-    return ft.View("/game", horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                   controls=[game_score, board, game_state])
+    return ft.View("/game/:diff", horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                   controls=[controller.game_score, controller.board, controller.game_state])

@@ -1,4 +1,4 @@
-from app.ui import *
+from app.controller import *
 import flet as ft
 from app.views.home import Home
 from app.views.game import Game
@@ -13,7 +13,7 @@ def main(page: ft.Page):
 
     app_routes = [
         path("/", clear=True, view=Home),
-        path("/game", clear=True, view=Game),
+        path("/game/:diff", clear=True, view=Game),
     ]
 
     Routing(page=page, app_routes=app_routes)

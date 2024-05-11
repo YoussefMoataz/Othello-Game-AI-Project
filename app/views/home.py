@@ -1,21 +1,18 @@
 import flet as ft
-from app.ui import set_othello
+from app.controller import *
 from app.othello import Othello
 from app.utils import *
 
 def Home(page: ft.Page, params, basket):
 
     def easy_clicked(e):
-        set_othello(Othello(DIFF_EASY))
-        page.go("/game")
+        page.go(f"/game/{DIFF_EASY}")
 
     def medium_clicked(e):
-        set_othello(Othello(DIFF_MEDIUM))
-        page.go("/game")
+        page.go(f"/game/{DIFF_MEDIUM}")
 
     def hard_clicked(e):
-        set_othello(Othello(DIFF_HARD))
-        page.go("/game")
+        page.go(f"/game/{DIFF_HARD}")
 
     button_height, button_width = 60, 140
 

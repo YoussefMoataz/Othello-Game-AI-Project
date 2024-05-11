@@ -8,6 +8,7 @@ def main(page: ft.Page):
     page.title = "Othello Game"
     page.window_width = 500
     page.window_height = 620
+    page.bgcolor = BLACK
     page.window_center()
 
     app_routes = [

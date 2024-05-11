@@ -289,3 +289,5 @@ class Othello:
             self.outflank(i, j, BLACK_DISK, self.board)
             self.last_played = i * 8 + j
             self.state = STATE_AI_TURN
+            return True
+        return False

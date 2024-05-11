@@ -36,15 +36,15 @@ def create_square_click_handler(index):
     def click(e):
         i, j = get_index_2d(index)
         # print("clicked index:", i, j)
-        othello.player_clicked(i, j)
-        refresh_board()
-        refresh_state()
-        refresh_score()
-        time.sleep(1)
-        othello.apply_best_move()
-        refresh_board()
-        refresh_state()
-        refresh_score()
+        if(othello.player_clicked(i, j)):
+            refresh_board()
+            refresh_state()
+            refresh_score()
+            time.sleep(1)
+            othello.apply_best_move()
+            refresh_board()
+            refresh_state()
+            refresh_score()
     return click
 
 def create_board():

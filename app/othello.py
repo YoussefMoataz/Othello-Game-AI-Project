@@ -4,6 +4,8 @@ class Othello:
     def __init__(self, difficulty = DIFF_MEDIUM):
         self.di = [0, 1, 0, -1]
         self.dj = [1, 0, -1, 0]
+        # self.di = [0, 1, 0, -1, 1, 1, -1, -1]
+        # self.dj = [1, 0, -1, 0, 1, -1, 1, -1]
 
         self.depth = 0
 
@@ -34,7 +36,7 @@ class Othello:
         return 0 <= i < 8 and 0 <= j < 8
 
     def set_available_around(self, i, j, player, board):
-        for c in range(4):
+        for c in range(len(self.di)):
             currenti = i + self.di[c]
             currentj = j + self.dj[c]
             if not self.is_in_board(currenti, currentj):
@@ -81,7 +83,7 @@ class Othello:
                     board[i][j] = EMPTY
         
     def outflank(self, i, j, player, board):
-        for c in range(4):
+        for c in range(len(self.di)):
             self.outflank_direction(i, j, self.di[c], self.dj[c], player, board)
         self.clear_available(board)
                 

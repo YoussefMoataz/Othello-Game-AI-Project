@@ -2,10 +2,10 @@ from app.utils import *
 
 class Othello:
     def __init__(self, difficulty = DIFF_MEDIUM):
-        # self.di = [0, 1, 0, -1]
-        # self.dj = [1, 0, -1, 0]
-        self.di = [0, 1, 0, -1, 1, 1, -1, -1]
-        self.dj = [1, 0, -1, 0, 1, -1, 1, -1]
+        self.di = [0, 1, 0, -1]
+        self.dj = [1, 0, -1, 0]
+        # self.di = [0, 1, 0, -1, 1, 1, -1, -1]
+        # self.dj = [1, 0, -1, 0, 1, -1, 1, -1]
 
         self.depth = 0
 

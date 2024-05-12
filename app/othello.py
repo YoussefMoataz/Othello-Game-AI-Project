@@ -271,7 +271,7 @@ class Othello:
     def apply_best_move(self):
         avail = []
         while avail == []:
-            if self.black_disks > 0:
+            if self.white_disks > 0:
                 x, y = self.get_best_move()
                 if x > -1 and y > -1:
                     self.board[x][y] = WHITE_DISK

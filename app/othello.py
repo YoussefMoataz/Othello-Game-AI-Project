@@ -2,10 +2,10 @@ from app.utils import *
 
 class Othello:
     def __init__(self, difficulty = DIFF_MEDIUM):
-        self.di = [0, 1, 0, -1]
-        self.dj = [1, 0, -1, 0]
-        # self.di = [0, 1, 0, -1, 1, 1, -1, -1]
-        # self.dj = [1, 0, -1, 0, 1, -1, 1, -1]
+        # self.di = [0, 1, 0, -1]
+        # self.dj = [1, 0, -1, 0]
+        self.di = [0, 1, 0, -1, 1, 1, -1, -1]
+        self.dj = [1, 0, -1, 0, 1, -1, 1, -1]
 
         self.depth = 0
 
@@ -234,18 +234,25 @@ class Othello:
             for j in range(8):
                 state[i][j] = self.board[i][j]
 
-        score = float("-inf")
+        best = float("inf")
+        best_i, best_j = -1, -1
 
         for (i, j) in avail:
-            res = self.minimax(state, 0, MIN, MAX, WHITE_DISK)
+            state[i][j] = WHITE_DISK
+            state2 = [row[:] for row in state]
+            self.outflank(i, j, WHITE_DISK, state2)
+            self.calculate_available_for(BLACK_DISK, state2)
 
-            if res > score:
-                score = res
-                x, y = i, j
+            res = self.minimax(state2, 0, MIN, MAX, BLACK_DISK)
 
-        # print(score, x, y)
+            if res < best:
+                best = res
+                best_i, best_j = i, j
 
-        return x, y
+            state[i][j] = AVAILABLE
+
+
+        return best_i, best_j
     
     def is_terminal_state(self):
 

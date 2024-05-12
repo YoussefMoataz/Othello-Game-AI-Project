@@ -66,7 +66,6 @@ class Controller:
             self.board.controls[index].border = ft.Border(ft.BorderSide(2, "red"), ft.BorderSide(2, "red"), ft.BorderSide(2, "red"), ft.BorderSide(2, "red"))
 
         self.page.update()
-        print(self.othello.black_disks, self.othello.white_disks)
 
     def refresh_state(self):
         if self.othello.state == STATE_PLAYER_TURN:

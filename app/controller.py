@@ -61,10 +61,12 @@ class Controller:
             else:
                 self.board.controls[i].content = None
         
-        if not self.othello.last_played == -1:
-            self.board.controls[self.othello.last_played].border = ft.Border(ft.BorderSide(2, "red"), ft.BorderSide(2, "red"), ft.BorderSide(2, "red"), ft.BorderSide(2, "red"))
+        if not self.othello.last_played == (-1, -1):
+            index = get_index_1d(self.othello.last_played[0], self.othello.last_played[1])
+            self.board.controls[index].border = ft.Border(ft.BorderSide(2, "red"), ft.BorderSide(2, "red"), ft.BorderSide(2, "red"), ft.BorderSide(2, "red"))
 
         self.page.update()
+        print(self.othello.black_disks, self.othello.white_disks)
 
     def refresh_state(self):
         if self.othello.state == STATE_PLAYER_TURN:

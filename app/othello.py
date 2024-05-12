@@ -20,7 +20,10 @@ class Othello:
         self.board[3][3] = self.board[4][4] = WHITE_DISK
         self.board[3][4] = self.board[4][3] = BLACK_DISK
 
-        self.last_played = -1
+        self.last_played = (-1, -1)
+
+        self.white_disks = 30
+        self.black_disks = 30
 
         self.calculate_available_for(BLACK_DISK, self.board)
 
@@ -256,38 +259,50 @@ class Othello:
 
         return avail_black == avail_white == []
 
+    def end_game(self):
+        p, c = self.evaluate_both()
+        if p > c:
+            self.state = STATE_BLACK_WON
+        elif p < c:
+            self.state = STATE_WHITE_WON
+        else:
+            self.state = STATE_DRAW
 
     def apply_best_move(self):
         avail = []
         while avail == []:
-            x, y = self.get_best_move()
-            if x > -1 and y > -1:
-                self.board[x][y] = WHITE_DISK
-                self.outflank(x, y, WHITE_DISK, self.board)
-                self.last_played = x * 8 + y
-                # print(x, y)
-            self.clear_available(self.board)
-            self.calculate_available_for(BLACK_DISK, self.board)
-            avail = self.get_available_moves(self.board)
-            if not avail == []:
-                self.state = STATE_PLAYER_TURN
-                return
-            
-            if self.is_terminal_state():
-                p, c = self.evaluate_both()
-                if p > c:
-                    self.state = STATE_BLACK_WON
-                elif p < c:
-                    self.state = STATE_WHITE_WON
-                else:
-                    self.state = STATE_DRAW
+            if self.black_disks > 0:
+                x, y = self.get_best_move()
+                if x > -1 and y > -1:
+                    self.board[x][y] = WHITE_DISK
+                    self.outflank(x, y, WHITE_DISK, self.board)
+                    self.last_played = (x, y)
+                    self.white_disks -= 1
+                    # print(x, y)
+                self.clear_available(self.board)
+                self.calculate_available_for(BLACK_DISK, self.board)
+                avail = self.get_available_moves(self.board)
+                if not avail == []:
+                    self.state = STATE_PLAYER_TURN
+                    return
+                
+                if self.is_terminal_state():
+                    self.end_game()
+                    break
+            else:
+                self.end_game()
                 break
             
     def player_clicked(self, i, j):
         if self.board[i][j] == AVAILABLE:
-            self.board[i][j] = BLACK_DISK
-            self.outflank(i, j, BLACK_DISK, self.board)
-            self.last_played = i * 8 + j
-            self.state = STATE_AI_TURN
-            return True
+            if self.black_disks > 0:
+                self.board[i][j] = BLACK_DISK
+                self.outflank(i, j, BLACK_DISK, self.board)
+                self.last_played = (i, j)
+                self.black_disks -= 1
+                self.state = STATE_AI_TURN
+                return True
+            else:
+                self.end_game()
+
         return False

@@ -308,6 +308,9 @@ class Othello:
                 self.last_played = (i, j)
                 self.black_disks -= 1
                 self.state = STATE_AI_TURN
+                if self.is_terminal_state():
+                    self.end_game()
+                    return False
                 return True
             else:
                 self.end_game()

@@ -32,9 +32,9 @@ class Controller:
                 self.refresh_score()
                 time.sleep(1)
                 self.othello.apply_best_move()
-                self.refresh_board()
-                self.refresh_state()
-                self.refresh_score()
+            self.refresh_board()
+            self.refresh_state()
+            self.refresh_score()
         return click
 
     def create_board(self):
